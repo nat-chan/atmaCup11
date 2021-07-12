@@ -1,0 +1,35 @@
+name: atmaCup11
+channels:
+  - pytorch
+  - conda-forge
+  - default
+  - plotly
+dependencies:
+  - cudatoolkit=10.2
+  - python=3.8
+  - pytorch
+  - torchvision
+  - torchaudio
+  - visdom
+  - jupyter
+  - numpy
+  - scipy
+  - matplotlib
+  - tensorboardX
+  - line_profiler
+  - pudb
+  - plotly
+  - pynvim
+  - mypy
+  - pylint
+  - yapf
+  - flake8
+  - black
+  - ipykernel
+  - pip
+  - pip:
+    - better_exceptions
+    - icecream
+    - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
+    - scikit-learn
+# vim:ts=2 sw=2
