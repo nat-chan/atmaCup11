@@ -3,6 +3,7 @@ channels:
   - pytorch
   - conda-forge
   - default
+  - anaconda
   - plotly
 dependencies:
   - cudatoolkit=10.2
@@ -15,7 +16,18 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
-  - tensorboardX
+  - scikit-image
+  - tensorboardx
+  - dill
+  - dominate # HTMLでいい感じに見る奴作るの
+  - configargparse
+  - gensim # word2vec
+  - tqdm
+  - pandas
+  - opencv # Lab色空間ヒストグラムを特徴量にしたい
+  - seaborn #nykerさんの可視化
+  - kornia
+  - debugpy
   - line_profiler
   - pudb
   - plotly
