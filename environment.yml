@@ -16,6 +16,7 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
+  - matplotlib-venn # nykerさんのcourse1
   - scikit-image
   - tensorboardx
   - dill
@@ -28,6 +29,7 @@ dependencies:
   - seaborn #nykerさんの可視化
   - hydra-core # lighlyのdependencies
   - pytorch-lightning # lighlyのdependencies
+  - python-levenshtein # gensim.similarities.levenshtein submoduleがない警告を無くす
   - kornia
   - debugpy
   - line_profiler
@@ -45,6 +47,7 @@ dependencies:
     - better_exceptions
     - icecream
     - lightly
+    - torchsummary
     - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
     - scikit-learn
 # vim:ts=2 sw=2
