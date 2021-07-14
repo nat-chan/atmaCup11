@@ -26,6 +26,8 @@ dependencies:
   - pandas
   - opencv # Lab色空間ヒストグラムを特徴量にしたい
   - seaborn #nykerさんの可視化
+  - hydra-core # lighlyのdependencies
+  - pytorch-lightning # lighlyのdependencies
   - kornia
   - debugpy
   - line_profiler
@@ -42,6 +44,7 @@ dependencies:
   - pip:
     - better_exceptions
     - icecream
+    - lightly
     - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
     - scikit-learn
 # vim:ts=2 sw=2
