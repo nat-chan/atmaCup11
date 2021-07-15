@@ -14,19 +14,20 @@ DATADIR = Path("./data")
 t = (DATADIR / "techniques.csv")
 assert t.is_file()
 
-technique = pd.read_csv(DATADIR / "techniques.csv")
-material = pd.read_csv(DATADIR / "materials.csv")
+techniques = pd.read_csv(DATADIR / "techniques.csv")
+materials = pd.read_csv(DATADIR / "materials.csv")
 
-material.head()
+materials.head()
 
-# material.csv, technique.csv の中には複数のobject_idが含まれているためobject_idで集約するとnameは要素の系列のようになります。
-material.groupby("object_id")["name"].apply(list)
+# materials.csv, techniques.csv の中には複数のobject_idが含まれているためobject_idで集約するとnameは要素の系列のようになります。
+mat_df = materials.groupby("object_id")["name"].apply(list)
+materials
 
 # 単語ベクトル表現の次元数
 # 元の語彙数をベースに適当に決めました
 model_size = {
-    "material": 20,
-    "technique": 8, # TODO ここ20でもよくね
+    "materials": 20,
+    "techniques": 8, # TODO ここ20でもよくね
 #    "collection": 3,
 #    "material_collection": 20,
     "material_technique": 20,
@@ -40,9 +41,9 @@ w2v_dfs = []
 for df, df_name in zip(
         # TODO 元discussionでは積集合も作ってる 
         [
-            material, technique,
+            materials, techniques,
         ], [
-            "material", "technique",
+            "materials", "techniques",
         ]):
     df_group = df.groupby("object_id")["name"].apply(list).reset_index()
     # Word2Vecの学習
@@ -70,5 +71,6 @@ for df, df_name in zip(
 
 
 # TODO どっかにdf, df_nameをリスト化して後から参照できるようにする
-w2v_dfs[0].to_pickle(DATADIR / f"material_{n_iter}.pkl")
-w2v_dfs[1].to_pickle(DATADIR / f"technique_{n_iter}.pkl")
+w2v_dfs[0].to_pickle(DATADIR / f"materials_{n_iter}.pkl")
+w2v_dfs[1].to_pickle(DATADIR / f"techniques_{n_iter}.pkl")
+

@@ -48,7 +48,8 @@ dependencies:
     - icecream
     - lightly
     - torchsummary
-    - grad-cam # nyker講座#2 
+    - python-vivid #nykerさんの便利ツールセット
+    - grad-cam # nyker講座#2
     - ttach #grad-camの依存
     - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
     - scikit-learn

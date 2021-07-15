@@ -26,10 +26,12 @@ train=(N-1)/N, test = 1/N くらいの割合になる
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
-from icecream import ic
+import sklearn
+print(sklearn.__version__)
+
 X = np.ones((17, 2))
 y = np.array([0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 groups = np.array([1, 1, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 6, 6, 7, 8, 8])
-cv = StratifiedGroupKFold(n_splits=3)
+cv = StratifiedGroupKFold(n_splits=3, shuffle=False)
 for train_idxs, test_idxs in cv.split(X, y, groups):
-    ic(len(train_idxs), len(test_idxs))
+    print(train_idxs, test_idxs)
