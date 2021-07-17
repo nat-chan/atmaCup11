@@ -13,7 +13,8 @@ import pandas as pd
 import seaborn as sns
 from matplotlib_venn import venn2 # type: ignore
 
-DATADIR = Path("./data")
+DATADIR = Path("/data/natsuki/dataset_atmaCup11")
+assert DATADIR.is_dir()
 
 train_df = pd.read_csv(DATADIR/'train.csv')
 test_df = pd.read_csv(DATADIR/'test.csv')

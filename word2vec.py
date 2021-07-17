@@ -9,7 +9,8 @@ from tqdm import tqdm
 tqdm.pandas() # df.progress_apply を生やす
 
 
-DATADIR = Path("./data")
+DATADIR = Path("/data/natsuki/dataset_atmaCup11")
+assert DATADIR.is_dir()
 
 t = (DATADIR / "techniques.csv")
 assert t.is_file()

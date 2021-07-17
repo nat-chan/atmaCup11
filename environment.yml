@@ -18,6 +18,7 @@ dependencies:
   - matplotlib
   - matplotlib-venn # nykerさんのcourse1
   - scikit-image
+  - tensorboard # vscodeのtensorboard拡張
   - tensorboardx
   - dill
   - dominate # HTMLでいい感じに見る奴作るの
@@ -51,6 +52,7 @@ dependencies:
     - python-vivid #nykerさんの便利ツールセット
     - grad-cam # nyker講座#2
     - ttach #grad-camの依存
+    - torch-tb-profiler #
     - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
     - scikit-learn
 # vim:ts=2 sw=2

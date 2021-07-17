@@ -82,7 +82,8 @@ if __name__ == "__main__":
     from glob import  glob
     import os
 
-    DATADIR = Path("./data")
+    DATADIR = Path("/data/natsuki/dataset_atmaCup11")
+    assert DATADIR.is_dir()
     train_df = pd.read_csv(DATADIR/'train.csv')
     test_df = pd.read_csv(DATADIR/'test.csv')
     material_df = pd.read_csv(DATADIR/'materials.csv')
