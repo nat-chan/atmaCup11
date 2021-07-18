@@ -1,0 +1,9 @@
+{
+    "git.ignoreLimitWarning": true,
+    "terminal.integrated.env.linux": {
+        "BETTER_EXCEPTIONS": "1",
+        "PATH": "${workspaceRoot}/scripts:${env:PATH}",
+    },
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+}
