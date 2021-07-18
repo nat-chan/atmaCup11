@@ -13,6 +13,7 @@ import torch
 from glob import glob
 from torchvision import transforms as T
 import torch
+import random
 
 
 SIZE = (224, 224)
@@ -48,6 +49,7 @@ class Atma11SimpleDataset(BaseDataset):
                 self.image_ids.append(image_path)
                 if self.opt.isTrain:
                     self.target_ids.append(i)
+        self.perm = list(range(len(self.image_ids)))
         self.transformer = T.Compose([
             T.Resize(SIZE),
             T.ToTensor(),
@@ -65,18 +67,27 @@ class Atma11SimpleDataset(BaseDataset):
         return target_tensor
 
 
-    def __getitem__(self, index: int) -> Dict[str, Any]:
+    def __getitem__(self, i: int) -> Dict[str, Any]:
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         input_dict = {
-            'image': self.load_image(self.image_ids[index]).to(device),
-            'path': self.image_ids[index],
+            'image': self.load_image(self.image_ids[self.perm[i]]).to(device),
+            'path': self.image_ids[self.perm[i]],
         }
         if self.opt.isTrain:
             input_dict.update({
-                'target': self.load_target(self.target_ids[index]).to(device),
+                'target': self.load_target(self.target_ids[self.perm[i]]).to(device),
             })
 
         return input_dict
+    
+    def shuffle(self, seed: int) -> None: 
+        """
+        各epochの前にshuffle(seed=epoch)を呼ぶことで
+        deterministicにshuffleできるのでresumeも可能。
+        random.Randomの独自のインスタンスを作成しているので
+        グローバルの乱数には影響がない。
+        """
+        random.Random(seed).shuffle(self.perm)
 
     def __len__(self) -> int:
         return len(self.image_ids)

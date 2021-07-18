@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from typing import *
 import sys
 from collections import OrderedDict
 from options.train_options import TrainOptions
 import data
 from util.iter_counter import IterationCounter
 from util.visualizer import Visualizer
+from util.make_deterministic import make_deterministic
 from trainers.pix2pix_trainer import Pix2PixTrainer
 from tqdm import tqdm
+
+# modelの初期重みをdeterministicにする epoch数を避けて10000とする
+make_deterministic(seed=10000)
 
 # parse options
 opt = TrainOptions().parse()
@@ -31,14 +36,16 @@ iter_counter = IterationCounter(opt, len(dataset))
 # create tool for visualization
 # visualizer = Visualizer(opt) TODO
 
+#TEST loaded: List[str] = list()
 for epoch in iter_counter.training_epochs():
     iter_counter.record_epoch_start(epoch)
     skip = iter_counter.total_steps_so_far % len(dataset)
     iter_counter.epoch_iter = skip
+    dataset.shuffle(seed=epoch) # dataの列をdeterministicにshuffleする
     dataloader = data.partial_dataloader(opt, dataset, range(skip, len(dataset)))
     pbar = tqdm(dataloader, dynamic_ncols=True, initial=skip//opt.batchSize, total=len(dataset)//opt.batchSize)
     for i, data_i in enumerate(pbar, start=iter_counter.epoch_iter//opt.batchSize):
-#        print(data_i['path'][0].split('/')[-1][:-4])
+        #TEST loaded += data_i['path']
         iter_counter.record_one_iteration()
         pbar.set_description(f'epoch={epoch} skip={skip//opt.batchSize} total={iter_counter.total_steps_so_far}')
 
@@ -85,3 +92,10 @@ for epoch in iter_counter.training_epochs():
 #TODO        trainer.save(epoch)
 
 print('Training was successfully finished.')
+
+#TEST shuffleが決定的かlogを吐いてdiffを取ったら完全一致した！
+#TEST from time import time
+#TEST now = int(time())
+#TEST with open(f"{now}.log", "w") as f:
+#TEST         txt = "\n".join(loaded)
+#TEST         f.write(txt)
