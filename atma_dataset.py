@@ -104,6 +104,7 @@ if __name__ == "__main__":
 
 
     dataset = AtmaDataset(meta_df=train_meta_df)
+    # datasetはlabelをintで返してもdata.DataLoaderがTensorにしてくれる
     loader = data.DataLoader(dataset=dataset, batch_size=54, num_workers=4)
     for x_tensor, y in loader:
         break
