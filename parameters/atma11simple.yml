@@ -1,0 +1,12 @@
+name: atma11simple
+netG: miganlatentall
+dataset_mode: atma11simple
+df_csv: 3fold0_train.csv
+use_hed: true
+no_instance: true
+leak_low: 4
+leak_high: 128
+label_nc: 4
+load_size: 512
+crop_size: 512
+display_winsize: 512
