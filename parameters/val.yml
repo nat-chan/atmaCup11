@@ -1,0 +1,5 @@
+dataroot: /data/natsuki/dataset_atmaCup11
+checkpoints_dir: /data/natsuki/dataset_atmaCup11/checkpoints
+isVal: true
+gpu_ids: 0
+batchSize: 1

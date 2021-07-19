@@ -10,6 +10,7 @@ from pathlib import Path
 import util.util as util
 from os import path
 import torch
+import torch.nn.functional as F
 from glob import glob
 from torchvision import transforms as T
 import torch
@@ -20,33 +21,27 @@ SIZE = (224, 224)
 IMG_MEAN = [0.485, 0.456, 0.406]
 IMG_STD = [0.229, 0.224, 0.225]
 
-class Atma11SimpleDataset(BaseDataset):
+class Atma11j3Dataset(BaseDataset):
     @staticmethod
     def modify_commandline_options(parser: argparse.Parser, is_train: bool) -> argparse.Parser:
         return parser
 
     def initialize(self, opt: argparse.Namespace) -> None:
         """
+        {object_id}-012345678.jpgみたいなのが入った。dirsを指定する
         データかさ増し用のdirsのリスト["photos", photos_h", ...] を持つ。
-        dirの中に{object_id}.jpgが入っていること前提。
-        jigsawのような{object_id}-012345678.jpgみたいなのはglob使うほかない。
-        TODO: transform決め打ちだが、optとget_transformで指定出来たりできるようにする。
-        TODO: targetをsubmitionの形に変更する関数をDataSetの責務とするか？
         """
         self.opt = opt
         self.root = Path(opt.dataroot)
-        self.df = pd.read_csv(self.root/opt.df_csv)
         self.dirs = opt.dirs.split(",")
         self.image_ids: List[str] = list() # image_paths
-        if self.opt.isTrain or self.opt.isVal:
-            self.target_ids: List[int] = list()
         for dir in self.dirs:
-            for i in range(len(self.df)):
-                object_id = self.df.iloc[i]["object_id"]
-                image_path = str(self.root/dir/f"{object_id}.jpg")
-                self.image_ids.append(image_path)
-                if self.opt.isTrain or self.opt.isVal:
-                    self.target_ids.append(i)
+            dir += "_j3"
+            self.image_ids+=list(map(str,(self.root/dir).glob("*.jpg")))
+
+        if self.opt.isTrain:
+            self.target_ids  = list(map(lambda s: s.split("-")[-1][:9], self.image_ids))
+
         self.perm = list(range(len(self.image_ids)))
         self.transformer = T.Compose([
             T.Resize(SIZE),
@@ -60,9 +55,10 @@ class Atma11SimpleDataset(BaseDataset):
         image_tensor = self.transformer(image)
         return image_tensor
 
-    def load_target(self, i: int) -> torch.Tensor:
-        target_tensor = torch.Tensor([self.df.iloc[i]["target"]])
-        return target_tensor
+    def load_target(self, p: str) -> torch.Tensor:
+        # tensor
+        one_hot = F.one_hot(torch.tensor(list(map(int, p))), num_classes=9)
+        return torch.flatten(one_hot).float()
 
 
     def __getitem__(self, i: int) -> Dict[str, Any]:
@@ -70,7 +66,7 @@ class Atma11SimpleDataset(BaseDataset):
             'image': self.load_image(self.image_ids[self.perm[i]]).cuda(),
             'path': self.image_ids[self.perm[i]],
         }
-        if self.opt.isTrain or self.opt.isVal:
+        if self.opt.isTrain:
             input_dict.update({
                 'target': self.load_target(self.target_ids[self.perm[i]]).cuda(),
             })

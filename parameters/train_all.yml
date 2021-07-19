@@ -1,0 +1,7 @@
+niter: 10 # 3foldなら5くらい 5でもまだまだ落ちそう
+save_epoch_freq: 1
+no_html: true
+dataroot: /data/natsuki/dataset_atmaCup11
+checkpoints_dir: /data/natsuki/dataset_atmaCup11/checkpoints
+gpu_ids: 0,1,2,3,4,5,6,7
+batchSize: 256

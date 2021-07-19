@@ -1,0 +1,3 @@
+dataset_mode: atma11j3
+out_features: 81
+netG: resnet34

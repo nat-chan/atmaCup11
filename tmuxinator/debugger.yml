@@ -1,0 +1,12 @@
+name: debugger
+root: <%= ENV["PWD"] %>
+windows:
+  - editor:
+#      layout: main-horizontal
+      layout: 499d,235x83,0,0[235x49,0,0{87x49,0,0,143,79x49,88,0,144,67x49,168,0,145},235x33,0,50,146]
+      panes:
+        - export NVIM_LISTEN_ADDRESS=/tmp/nvim_tmuxinator_0; nvim <%= @settings["--conf"] %>
+        - ./link_tensorboard.sh <%= @settings["--conf"] %>; watch -d -n 1 nvidia-smi
+        - watch -d -n 1 df -h
+        - export NVIM_LISTEN_ADDRESS=/tmp/nvim_tmuxinator_0; sleep 3; python debug.py train.py --conf=<%= @settings["--conf"] %> --conf2=./parameters/debug.yml
+# vim: set ts=2 sw=2 :

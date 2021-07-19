@@ -10,6 +10,8 @@ from util.visualizer import Visualizer
 from util.make_deterministic import make_deterministic
 from trainers.pix2pix_trainer import Pix2PixTrainer
 from tqdm import tqdm
+from pathlib import Path
+
 
 # modelの初期重みをdeterministicにする epoch数を避けて10000とする
 make_deterministic(seed=10000)
@@ -31,11 +33,17 @@ if not len(dataset)%opt.batchSize == 0:
 # create trainer for our model
 trainer = Pix2PixTrainer(opt)
 
+#XXX with open("/home/natsuki/hoge.log","a") as f:
+#XXX     log = str(trainer.pix2pix_model.netG.model.conv1.weight).split("\n")[1]
+#XXX     f.write(f"{__file__} {log}\n")
+
 # create tool for counting iterations
 iter_counter = IterationCounter(opt, len(dataset))
 
 # create tool for visualization
 #TODO visualizer = Visualizer(opt)
+
+loss_log = open(Path(opt.checkpoints_dir)/opt.name/"loss.log", "w")
 
 #TEST loaded: List[str] = list()
 for epoch in iter_counter.training_epochs():
@@ -48,14 +56,16 @@ for epoch in iter_counter.training_epochs():
     for i, data_i in enumerate(pbar, start=iter_counter.epoch_iter//opt.batchSize):
         #TEST loaded += data_i['path']
         iter_counter.record_one_iteration()
-        pbar.set_description(f'epoch={epoch} skip={skip//opt.batchSize} total={iter_counter.total_steps_so_far}')
 
         trainer.run_generator_one_step(data_i)
 
+        losses = trainer.get_latest_losses()
+        MSE: float = losses["MSE"].mean().item()
+        print(iter_counter.total_steps_so_far, MSE, file=loss_log, flush=True)
+        pbar.set_description(f'epoch={epoch} skip={skip//opt.batchSize} total={iter_counter.total_steps_so_far} MSE={str(MSE)[:5]}')
+
         # Visualizations
-        if iter_counter.needs_printing():
-            losses = trainer.get_latest_losses()
-            print(losses)
+#        if iter_counter.needs_printing():
 #TODO            visualizer.plot_current_errors(losses, iter_counter.total_steps_so_far) #
 
 #        if iter_counter.needs_displaying():
@@ -87,6 +97,7 @@ for epoch in iter_counter.training_epochs():
         trainer.save('latest')
         trainer.save(epoch)
 
+loss_log.close()
 print('Training was successfully finished.')
 
 #TEST shuffleが決定的かlogを吐いてdiffを取ったら完全一致した！

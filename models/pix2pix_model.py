@@ -43,6 +43,9 @@ class Pix2PixModel(torch.nn.Module):
 
     def initialize_networks(self, opt):
         netG = networks.define_G(opt)
+#XXX        with open("/home/natsuki/hoge.log","a") as f:
+#XXX            log = str(netG.model.conv1.weight).split("\n")[1]
+#XXX            f.write(f"{__file__} {log}\n")
         if not opt.isTrain or opt.continue_train:
             try:
                 netG = util.load_network(netG, 'G', opt.which_epoch, opt)

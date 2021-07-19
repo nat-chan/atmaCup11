@@ -1,0 +1,4 @@
+dataset_mode: atma11simple
+out_features: 1
+netG: resnet34
+batchSize: 64
