@@ -23,18 +23,19 @@ print(' '.join(sys.argv))
 # load the dataset
 dataset = data.find_dataset_using_name(opt.dataset_mode)()
 dataset.initialize(opt)
-print(len(dataset))
 print(f"dataset {type(dataset).__name__} of size {len(dataset)} was created")
+if not len(dataset)%opt.batchSize == 0:
+    print("\x1b[31;1mYOU CAN NOT RESUME TRAIN DETERMINISTICALLY! CHECK BATCHSIZE!\x1b[m")
 
 
 # create trainer for our model
-# trainer = Pix2PixTrainer(opt)
+trainer = Pix2PixTrainer(opt)
 
 # create tool for counting iterations
 iter_counter = IterationCounter(opt, len(dataset))
 
 # create tool for visualization
-# visualizer = Visualizer(opt) TODO
+#TODO visualizer = Visualizer(opt)
 
 #TEST loaded: List[str] = list()
 for epoch in iter_counter.training_epochs():
@@ -49,18 +50,13 @@ for epoch in iter_counter.training_epochs():
         iter_counter.record_one_iteration()
         pbar.set_description(f'epoch={epoch} skip={skip//opt.batchSize} total={iter_counter.total_steps_so_far}')
 
-        # Training
-        # train generator
-#TODO        if i % opt.D_steps_per_G == 0:
-#TODO            trainer.run_generator_one_step(data_i)
-
-        # train discriminator
-#TODO        trainer.run_discriminator_one_step(data_i)
+        trainer.run_generator_one_step(data_i)
 
         # Visualizations
-#        if iter_counter.needs_printing(): TODO visual
-#            losses = trainer.get_latest_losses()
-#            visualizer.plot_current_errors(losses, iter_counter.total_steps_so_far) #
+        if iter_counter.needs_printing():
+            losses = trainer.get_latest_losses()
+            print(losses)
+#TODO            visualizer.plot_current_errors(losses, iter_counter.total_steps_so_far) #
 
 #        if iter_counter.needs_displaying():
 #            if not (opt.leak_low == -1 and opt.leak_high == -1):
@@ -76,20 +72,20 @@ for epoch in iter_counter.training_epochs():
 
         if iter_counter.needs_saving():
             print(f'saving the latest model (epoch {epoch}, total_steps {iter_counter.total_steps_so_far})')
-#TODO            if opt.save_steps:
-#TODO                trainer.save('s%s' % iter_counter.total_steps_so_far)
-#TODO                trainer.save('latest')
-#TODO            else:
-#TODO                trainer.save('latest')
+            if opt.save_steps:
+                trainer.save('s%s' % iter_counter.total_steps_so_far)
+                trainer.save('latest')
+            else:
+                trainer.save('latest')
             iter_counter.record_current_iter()
     pbar.close()
-#TODO    trainer.update_learning_rate(epoch)
+    trainer.update_learning_rate(epoch)
     iter_counter.record_epoch_end()
 
     if epoch % opt.save_epoch_freq == 0 or epoch == iter_counter.total_epochs:
         print(f'saving the model at end of (epoch {epoch}, total_steps {iter_counter.total_steps_so_far})')
-#TODO        trainer.save('latest')
-#TODO        trainer.save(epoch)
+        trainer.save('latest')
+        trainer.save(epoch)
 
 print('Training was successfully finished.')
 

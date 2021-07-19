@@ -30,8 +30,6 @@ class Atma11SimpleDataset(BaseDataset):
         データかさ増し用のdirsのリスト["photos", photos_h", ...] を持つ。
         dirの中に{object_id}.jpgが入っていること前提。
         jigsawのような{object_id}-012345678.jpgみたいなのはglob使うほかない。
-        TODO: indexへのアクセスに置換配列を噛ませて、epochをseedに決定論的にshuffleする関数を生やす。
-            - dataloaderのshuffleはdefaultでFalseだし、Trueにしたときにresumeが決定的だと確かめられたら別にいいかも
         TODO: transform決め打ちだが、optとget_transformで指定出来たりできるようにする。
         TODO: targetをsubmitionの形に変更する関数をDataSetの責務とするか？
         """
@@ -68,14 +66,13 @@ class Atma11SimpleDataset(BaseDataset):
 
 
     def __getitem__(self, i: int) -> Dict[str, Any]:
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
         input_dict = {
-            'image': self.load_image(self.image_ids[self.perm[i]]).to(device),
+            'image': self.load_image(self.image_ids[self.perm[i]]).cuda(),
             'path': self.image_ids[self.perm[i]],
         }
         if self.opt.isTrain:
             input_dict.update({
-                'target': self.load_target(self.target_ids[self.perm[i]]).to(device),
+                'target': self.load_target(self.target_ids[self.perm[i]]).cuda(),
             })
 
         return input_dict

@@ -99,7 +99,60 @@ x = converter(img).unsqueeze(0)
 output = model(x)
 output.shape
 
-# %%
-criterion = nn.MSELoss()
+# %% XXX nyker さんの train
+from torch.optim.optimizer import Optimizer
+from collections import defaultdict
 
+def train(
+    model: nn.Module,
+    optimizer: Optimizer,
+    train_loader: data.DataLoader
+) -> pd.Series:
+
+    # train にすることで model 内の学習時にのみ有効な機構が有効になります (Dropouts Layers、BatchNorm Layers...)
+    model.train()
+
+    criterion = nn.MSELoss()
+
+    # ロスの値を保存する用に dict を用意
+    metrics = defaultdict(float)
+    n_iters = len(train_loader)
+
+    for i, (x_i, y_i) in enumerate(train_loader):
+        x_i = x_i.to(DEVICE)
+        y_i = y_i.to(DEVICE).reshape(-1, 1).float()
+
+        output = model(x_i)
+        loss = criterion(output, y_i)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        metric_i = {
+            # loss は tensor object なので item をつかって python object に戻す
+            "loss": loss.item()
+        }
+        for k, v in metric_i.items():
+            metrics[k] += v
+
+    for k, v in metrics.items():
+        metrics[k] /= n_iters
+
+    return pd.Series(metrics).add_prefix("train_")
+
+# %% XXX ここからtrainの実装
+
+from options.train_options import TrainOptions
+from util.iter_counter import IterationCounter
+import data
+opt = TrainOptions().parse(
+"""
+--conf ./parameters/atma11simple.yml --conf2 ./parameters/train.yml
+""".split())
+
+dataset = data.find_dataset_using_name(opt.dataset_mode)()
+dataset.initialize(opt)
+print(len(dataset))
+iter_counter = IterationCounter(opt, len(dataset))
 # %%
