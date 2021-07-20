@@ -55,7 +55,6 @@ dependencies:
     - grad-cam # nyker講座#2
     - ttach #grad-camの依存
     - torch-tb-profiler #
-    - torch-ort # model = torch_ort.ORTModule(model) で train速度が1.3倍になる
     - --pre --extra-index https://pypi.anaconda.org/scipy-wheels-nightly/simple
     - scikit-learn
 # vim:ts=2 sw=2
