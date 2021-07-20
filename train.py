@@ -13,11 +13,12 @@ from tqdm import tqdm
 from pathlib import Path
 
 
-# modelの初期重みをdeterministicにする epoch数を避けて10000とする
-make_deterministic(seed=10000)
 
 # parse options
 opt = TrainOptions().parse()
+
+# modelの初期重みをdeterministicにする epoch数を避けて10000とする
+make_deterministic(seed=opt.seed+10000)
 
 # print options to help debugging
 print(' '.join(sys.argv))
@@ -50,7 +51,7 @@ for epoch in iter_counter.training_epochs():
     iter_counter.record_epoch_start(epoch)
     skip = iter_counter.total_steps_so_far % len(dataset)
     iter_counter.epoch_iter = skip
-    dataset.shuffle(seed=epoch) # dataの列をdeterministicにshuffleする
+    dataset.shuffle(seed=opt.seed+epoch) # dataの列をdeterministicにshuffleする
     dataloader = data.partial_dataloader(opt, dataset, range(skip, len(dataset)))
     pbar = tqdm(dataloader, dynamic_ncols=True, initial=skip//opt.batchSize, total=len(dataset)//opt.batchSize)
     for i, data_i in enumerate(pbar, start=iter_counter.epoch_iter//opt.batchSize):

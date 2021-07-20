@@ -5,7 +5,6 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 
 import torch
 from models.networks.base_network import BaseNetwork
-from models.networks.loss import *
 from models.networks.generator import *
 import util.util as util
 
@@ -23,15 +22,8 @@ def find_network_using_name(target_network_name, filename):
 
 def modify_commandline_options(parser, is_train):
     opt, _ = parser.parse_known_args()
-
     netG_cls = find_network_using_name(opt.netG, 'generator')
     parser = netG_cls.modify_commandline_options(parser, is_train)
-    if is_train:
-        netD_cls = find_network_using_name(opt.netD, 'discriminator')
-        parser = netD_cls.modify_commandline_options(parser, is_train)
-    netE_cls = find_network_using_name('conv', 'encoder')
-    parser = netE_cls.modify_commandline_options(parser, is_train)
-
     return parser
 
 

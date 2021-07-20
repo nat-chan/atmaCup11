@@ -1,3 +1,6 @@
+name: atma11j3
 dataset_mode: atma11j3
 out_features: 81
+transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11j3/2725888_net_G.pth
+seed: 100
 netG: resnet34
