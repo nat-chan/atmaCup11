@@ -31,6 +31,7 @@ dependencies:
   - hydra-core # lighlyのdependencies
   - pytorch-lightning # lighlyのdependencies
   - python-levenshtein # gensim.similarities.levenshtein submoduleがない警告を無くす
+  - timm # model = timm.create_model('efficientnet_b0', pretrained=False)
   - kornia
   - debugpy
   - ruby # tmuxinator
