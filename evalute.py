@@ -30,10 +30,10 @@ with tqdm(dataloader, dynamic_ncols=True) as pbar:
         # 複数のfeatureのときは　.cpu().detach().numpy()
         # np.mean(list_of_numpy, axis=0) で featureの次元を保持したままmeanが取れる
         object_id = data_i["path"][0].split("/")[-1][:-4]
-        predict = model(data_i, mode='inference').item()
+        predict = model(data_i, mode='inference').cpu().detach().numpy()
         predicts[object_id].append(predict)
         if opt.isVal:
-            target = data_i["target"].item()
+            target = data_i["target"].cpu().detach().numpy()
             targets[object_id].append(target)
 
 losses = list() #type: ignore
