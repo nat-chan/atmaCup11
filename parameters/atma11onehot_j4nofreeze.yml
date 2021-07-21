@@ -1,0 +1,4 @@
+dataset_mode: atma11onehot
+out_features: 4
+transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11j4/1_net_G.pth
+netG: resnet34
