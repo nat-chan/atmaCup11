@@ -32,6 +32,12 @@ dependencies:
   - pytorch-lightning # lighlyのdependencies
   - python-levenshtein # gensim.similarities.levenshtein submoduleがない警告を無くす
   - timm # model = timm.create_model('efficientnet_b0', pretrained=False)
+  - jupyter # 移動
+  - nbstripout
+  - nbdime
+  - lightgbm
+  - nbconvert
+  - optuna
   - kornia
   - debugpy
   - ruby # tmuxinator
