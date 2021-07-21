@@ -17,7 +17,9 @@ while :;do
                 exit
             fi
         else # k-foldの時
-#            python3 evalute.py --name=${name}_${suffix} --df_csv ${suffix}_train.csv --conf=./parameters/${name}.yml --conf2=./parameters/test.yml  --which_epoch=${epoch} --gpu_ids=${gpu_ids} --isVal
+            if [ ${epoch} -eq 5 ] || [ ${epoch} -eq 10 ]; then
+                python3 evalute.py --name=${name}_${suffix} --df_csv ${suffix}_train.csv --conf=./parameters/${name}.yml --conf2=./parameters/test.yml  --which_epoch=${epoch} --gpu_ids=${gpu_ids} --isVal
+            fi
             python3 evalute.py --name=${name}_${suffix} --df_csv ${suffix}_test.csv  --conf=./parameters/${name}.yml --conf2=./parameters/test.yml  --which_epoch=${epoch} --gpu_ids=${gpu_ids} --isVal
         fi
         ((epoch++))
