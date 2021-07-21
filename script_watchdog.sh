@@ -5,9 +5,9 @@ set -eux
 name=$1 #suffixを含まない
 suffix=$2
 gpu_ids=$3
+epoch=${4:-1}
 root=/data/natsuki/dataset_atmaCup11/checkpoints/${name}_${suffix}
 wait=$((1))
-epoch=1
 while :;do
     if [ -f "${root}/${epoch}_net_G.pth" ]; then
         if [ "${suffix}" = "all" ]; then

@@ -15,7 +15,7 @@ windows:
         - script_watchdog.sh <%= @settings["--conf"] %> 3fold2 2
         - python3 train.py --conf ./parameters/<%= @settings["--conf"] %>.yml --conf2 ./parameters/train_gpu_ids.yml --name <%= @settings["--conf"] %>_all    --df_csv all_train.csv    --gpu_ids 3; cat
         - while :; do sleep 1;tail -f /data/natsuki/dataset_atmaCup11/checkpoints/<%= @settings["--conf"] %>_all/loss.log;done
-        - script_watchdog.sh <%= @settings["--conf"] %> all 3 && tmux kill-session -t fold0123
+        - start=$(date +%s); script_watchdog.sh <%= @settings["--conf"] %> all 3 && end=$(date +%s) && tmux display-message "$(((end-start)/60)) min fold0123" && tmux kill-session -t fold0123
 # 1 3 5
 # pudb3 train.py --conf ./parameters/atma11simple_xavier_3fold1.yml --conf2 ./parameters/train_gpu_ids.yml --gpu_ids 1 
 # vim: set ts=2 sw=2 :
