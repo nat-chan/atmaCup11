@@ -25,7 +25,7 @@ def myplot(root: Path, title: str, names: List[str]):
                     RMSE_fold = np.nan
                 each_fold_RMSE.append(RMSE_fold)
             RMSE_epoch = np.mean(each_fold_RMSE)
-            if epoch == 5:
+            if epoch == 10:
                 print(name, epoch, RMSE_epoch)
             each_epoch_RMSE.append(RMSE_epoch)
         plt.plot(range(1, niter+1), each_epoch_RMSE, label=name, marker="o")
