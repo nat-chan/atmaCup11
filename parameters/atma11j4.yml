@@ -1,5 +1,7 @@
 name: atma11j4
 dataset_mode: atma11j4
 out_features: 81
-transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11j3/2725888_net_G.pth
+#transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11j3/2725888_net_G.pth
 netG: resnet34
+continue_train: true
+which_epoch: s737280
