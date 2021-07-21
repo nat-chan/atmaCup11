@@ -30,24 +30,31 @@ def myplot(root: Path, title: str, names: List[str]):
             each_epoch_RMSE.append(RMSE_epoch)
         plt.plot(range(1, niter+1), each_epoch_RMSE, label=name, marker="o")
     plt.legend()
-myplot(
-    root,
-    "3fold-CV use TTA for target",
-    [
-        "atma11simple_xavier_b64",
-        "atma11simple_xavier_b128",
-        "atma11simple_xavier_b256",
-        "atma11simple_xavier_b512",
-        "atma11simple_nofreeze",
-        "atma11simple_j4nofreeze",
-        "atma11simple_j4freeze",
-        "atma11simple_xavier_efficientnetb0",
-    ]
-)
+myplot(root, "simple", [
+    "atma11simple_j4nofreeze",
+    "atma11simple_nofreeze", # 転移元はj3
+    "atma11simple_j4e5nofreeze",
+    "atma11simple_xavier_b256",
+    "atma11simple_j4freeze",
+])
 
 # %%
-myplot( root, "3fold-CV use TTA for sorting_date", [ "atma11sortingdate_j4nofreeze", ])
+myplot( root, "sortingdate", [
+    "atma11sortingdate_j4nofreeze",
+    "atma11sortingdate_j4e5nofreeze",
+])
 # %%
-myplot( root, "3fold-CV use TTA for onhot", [ "atma11onehot_j4nofreeze", ])
+myplot( root, "onehot", [
+    "atma11onehot_j4nofreeze", 
+    "atma11onehot_j4e5nofreeze",
+])
 # %%
+myplot( root, "materialstechniques", [
+    "atma11onehot_j4nofreeze", 
+    "atma11onehot_j4e5nofreeze",
+])
+# %%
+myplot( root, "materialstechniques", [
+    "atma11materialstechniques_j4e5nofreeze",
+])
 # %%
