@@ -1,4 +1,4 @@
-niter: 10 # 3foldなら5くらい
+niter: 5 # 3foldなら5くらい
 save_epoch_freq: 1
 no_html: true
 #save_steps: true # 1poch 20992(2万)の粒度だったらsave_steps要らないかも
