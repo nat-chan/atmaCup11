@@ -1,0 +1,15 @@
+name: eval0123
+root: <%= ENV["PWD"] %>
+windows:
+  - editor:
+      layout: tile
+      panes:
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold0 --df_csv 3fold0_test.csv  --gpu_ids=0 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold0 --df_csv 3fold0_train.csv --gpu_ids=0 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold1 --df_csv 3fold1_test.csv  --gpu_ids=1 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold1 --df_csv 3fold1_train.csv --gpu_ids=1 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold2 --df_csv 3fold2_test.csv  --gpu_ids=2 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_3fold2 --df_csv 3fold2_train.csv --gpu_ids=2 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_all    --df_csv    all_test.csv  --gpu_ids=3 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+        - python3 evalute2.py --name=<%= @settings["--conf"] %>_all    --df_csv    all_train.csv --gpu_ids=3 --conf=./parameters/<%= @settings["--conf"] %>.yml --conf2=./parameters/test.yml --which_epoch=<%= @settings["--conf2"] %>
+# vim: set ts=2 sw=2 :
