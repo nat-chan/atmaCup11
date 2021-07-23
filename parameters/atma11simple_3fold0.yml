@@ -1,5 +1,0 @@
-name: atma11simple_3fold0
-dataset_mode: atma11simple
-df_csv: 3fold0_train.csv
-out_features: 1
-netG: resnet34
