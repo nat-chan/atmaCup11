@@ -1,0 +1,7 @@
+name: atma11simple_tranfer_freeze_debug
+dataset_mode: atma11simple
+out_features: 1
+netG: resnet34
+transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11simple_xavier_3fold0/5_net_G.pth
+transfer_freeze: true
+gpu_ids: 1

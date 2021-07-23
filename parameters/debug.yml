@@ -1,0 +1,9 @@
+niter: 2 # 3foldなら5くらい
+save_epoch_freq: 1
+no_html: true
+save_steps: true # 1poch 20992(2万)の粒度だったらsave_steps要らないかも
+save_latest_freq: 200000 # 64の倍数 # 3foldx8なら10epochくらい
+dataroot: /data/natsuki/dataset_atmaCup11
+checkpoints_dir: /data/natsuki/dataset_atmaCup11/checkpoints
+gpu_ids: 4
+batchSize: 64

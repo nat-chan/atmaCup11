@@ -6,7 +6,7 @@ windows:
       layout: a865,234x83,0,0[234x49,0,0{87x49,0,0,47,82x49,88,0,48,63x49,171,0,49},234x33,0,50,50]
       panes:
         - export NVIM_LISTEN_ADDRESS=/tmp/nvim_tmuxinator_0; nvim <%= @settings["--conf"] %>
-        - ./script_link.sh <%= @settings["--conf"] %>; watch -d -n 1 nvidia-smi
+        - watch -d -n 1 nvidia-smi
         - watch -d -n 1 df -h
         - export NVIM_LISTEN_ADDRESS=/tmp/nvim_tmuxinator_0; sleep 3; python debug.py train.py --conf=<%= @settings["--conf"] %> --conf2=<%= @settings["--conf2"] %>
 # vim: set ts=2 sw=2 :

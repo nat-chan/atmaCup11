@@ -1,0 +1,21 @@
+name: fold
+root: <%= ENV["PWD"] %>
+windows:
+  - editor:
+      layout: tile
+      panes:
+        - pudb3 train.py --conf ./parameters/<%= @settings["--conf"] %>.yml --conf2 ./parameters/train_gpu_ids.yml --name <%= @settings["--conf"] %>_3fold0 --df_csv 3fold0_train.csv --gpu_ids 4; cat
+        - sleep 3;tmux send-keys -t 1 c;while :; do sleep 1;tail -f /data/natsuki/dataset_atmaCup11/checkpoints/<%= @settings["--conf"] %>_3fold0/loss.log;done
+        - script_watchdog.sh <%= @settings["--conf"] %> 3fold0 4
+        - pudb3 train.py --conf ./parameters/<%= @settings["--conf"] %>.yml --conf2 ./parameters/train_gpu_ids.yml --name <%= @settings["--conf"] %>_3fold1 --df_csv 3fold1_train.csv --gpu_ids 5; cat
+        - sleep 3;tmux send-keys -t 4 c;while :; do sleep 1;tail -f /data/natsuki/dataset_atmaCup11/checkpoints/<%= @settings["--conf"] %>_3fold1/loss.log;done
+        - script_watchdog.sh <%= @settings["--conf"] %> 3fold1 5
+        - pudb3 train.py --conf ./parameters/<%= @settings["--conf"] %>.yml --conf2 ./parameters/train_gpu_ids.yml --name <%= @settings["--conf"] %>_3fold2 --df_csv 3fold2_train.csv --gpu_ids 6; cat
+        - sleep 3;tmux send-keys -t 7 c;while :; do sleep 1;tail -f /data/natsuki/dataset_atmaCup11/checkpoints/<%= @settings["--conf"] %>_3fold2/loss.log;done
+        - script_watchdog.sh <%= @settings["--conf"] %> 3fold2 6
+        - pudb3 train.py --conf ./parameters/<%= @settings["--conf"] %>.yml --conf2 ./parameters/train_gpu_ids.yml --name <%= @settings["--conf"] %>_all    --df_csv all_train.cs     --gpu_ids 7; cat
+        - sleep 3;tmux send-keys -t 10 c;while :; do sleep 1;tail -f /data/natsuki/dataset_atmaCup11/checkpoints/<%= @settings["--conf"] %>_all/loss.log;done
+        - script_watchdog.sh <%= @settings["--conf"] %> all 7
+# 1 3 5
+# pudb3 train.py --conf ./parameters/atma11simple_xavier_3fold1.yml --conf2 ./parameters/train_gpu_ids.yml --gpu_ids 1 
+# vim: set ts=2 sw=2 :

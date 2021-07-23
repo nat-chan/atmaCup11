@@ -1,0 +1,11 @@
+name: suicide
+root: <%= ENV["PWD"] %>
+windows:
+  - editor:
+      layout: tile
+      panes:
+        - echo "I wanna die!"; cat
+        - sleep 5 && tmux kill-session -t suicide
+# 1 3 5
+# pudb3 train.py --conf ./parameters/atma11simple_xavier_3fold1.yml --conf2 ./parameters/train_gpu_ids.yml --gpu_ids 1 
+# vim: set ts=2 sw=2 :
