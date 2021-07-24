@@ -22,8 +22,8 @@ class ResNet34Generator(BaseNetwork):
             self.model.fc = nn.Linear(in_features=512, out_features=weights["model.fc.weight"].shape[0], bias=True)
             self.load_state_dict(weights)
             if self.opt.transfer_freeze:
-                for param in self.model.parameters(): # 最終層以外の重みを固定
-                    param.requires_grad = False
+                for name, param in self.model.named_parameters(): 
+                    param.requires_grad = any( subname in name for subname in self.opt.transfer_unfreeze.split(",") )
         self.model.fc = nn.Linear(in_features=512, out_features=opt.out_features, bias=True)
 
     def forward(self, input: torch.Tensor, z=None) -> torch.Tensor:

@@ -1,0 +1,6 @@
+dataset_mode: atma11simple
+out_features: 1
+transfer_weights: /data/natsuki/dataset_atmaCup11/checkpoints/atma11j4/5_net_G.pth
+transfer_freeze: true
+transfer_unfreeze: layer3,layer4
+netG: resnet34

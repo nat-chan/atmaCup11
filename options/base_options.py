@@ -91,6 +91,7 @@ class BaseOptions():
         parser.add_argument('--out_features', type=int, default=1, help='resnet34 model.fc out_features value')
         parser.add_argument('--transfer_weights', type=str, default="", help='resnet34 transfer weights path')
         parser.add_argument('--transfer_freeze', action='store_true', help='freaze transfer weights')
+        parser.add_argument('--transfer_unfreeze', type=str, default="NOTHING", help='unfreaze transfer weights')
         parser.add_argument('--isVal', action='store_true', help='validation phase')
         parser.add_argument('--seed', type=int, default=0, help='seed')
 
